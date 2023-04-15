@@ -9,9 +9,9 @@ spec:
   gateways:
   - main-gateway
   http:
-  - match:
-    route:
+  - route:
     - destination:
         host: myapp.default.svc.cluster.local
         port:
           number: 80
+ 

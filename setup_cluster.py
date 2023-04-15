@@ -27,7 +27,7 @@ if not bool(parsedOutput["valid"]):
 stdout, stderr =initializeTerraform(terraformPathArgument)
 print( stdout )
 #apply infrastructue:
-#stdout, stderr =applyTerraform(terraformPathArgument)
+stdout, stderr =applyTerraform(terraformPathArgument)
 throwException(stderr)
 print( stdout )
 #update kubernetes local file:
@@ -48,6 +48,12 @@ throwException(stderr)
 stdout, stderr=runShell(shlex.split('helm repo update'),True)
 if stderr:
     raise Exception(stderr)
+ 
+clusterName=getOutPut(terraformPathArgument,'cluster_name')
+clusterRole=getOutPut(terraformPathArgument,'cluster_role')
+
+stdout, stderr=runShell(shlex.split(f'helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName={clusterName[0]}'),True)
+throwException(stderr)
 
 stdout, stderr=runShell(shlex.split('helm upgrade --install istio-base istio/base -n istio-system --create-namespace'),True)
 throwException(stderr)
@@ -55,17 +61,11 @@ throwException(stderr)
  
 stdout, stderr=runShell(shlex.split('helm upgrade --install istiod istio/istiod -n istio-system'),True)
 throwException(stderr)
-
-clusterName=getOutPut(terraformPathArgument,'cluster_name')
-clusterRole=getOutPut(terraformPathArgument,'cluster_role')
-#
-stdout, stderr=runShell(shlex.split(f'helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName={clusterName[0]}'),True)
-throwException(stderr)
-
-stdout, stderr=runShell(shlex.split(f'helm upgrade --install base ./services/base --create-namespace --timeout=1m --wait --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),true)
-throwException(stderr)
-
  
+  
 
-stdout, stderr=runShell(shlex.split(f'helm upgrade --install myapp ./services/myapp --create-namespace --timeout=1m --wait --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),True)
+stdout, stderr=runShell(shlex.split(f'helm upgrade --install base ./services/base --create-namespace --timeout=5m --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),True)
+throwException(stderr)
+
+stdout, stderr=runShell(shlex.split(f'helm upgrade --install myapp ./services/myapp --create-namespace --timeout=5m --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),True)
 throwException(stderr)

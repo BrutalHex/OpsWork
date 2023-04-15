@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp
+  annotations:
+    argocd.argoproj.io/image-updater.update-policy: >
+      myapp.image=semver:*,{{ .Values.myapp.image }}
+spec:
+  project: default
+  source:
+    repoURL: ssh://git@github.com:BrutalHex/OpsWork.git
+    targetRevision: HEAD
+    path: services/myapp/
+    repoCredentialsSecret:
+      name: ops-ssh-key
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

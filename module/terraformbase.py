@@ -34,6 +34,7 @@ def applyTerraform(terraformPathArgument):
 def getOutPut(terraformPathArgument,key):
     return runShell(shlex.split(f'terraform {terraformPathArgument} output -raw {key}'  ,True))
 
+
 def updateLocoalKubernetesConfig(terraformPathArgument):
     region, stderr=getOutPut(terraformPathArgument,'region')
     if stderr:

@@ -18,6 +18,7 @@ variable "app_name" {
 }
 variable "az_number" {
   default = {
-    a = 1
+    a = 1,
+    b = 2
   }
 }

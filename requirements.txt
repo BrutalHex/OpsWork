@@ -1,2 +1,3 @@
 exrex
 locust
+boto3

@@ -3,7 +3,7 @@ resource "aws_eks_node_group" "eks" {
   node_group_name = "eks"
   node_role_arn   = aws_iam_role.node_group_eks.arn
   subnet_ids      = [for item in aws_subnet.eks : item.id]
-  instance_types  = ["t2.small"]
+  instance_types  = ["t2.medium"]
   scaling_config {
     desired_size = 1
     max_size     = 3
@@ -62,3 +62,16 @@ resource "aws_iam_role_policy_attachment" "node_group_eks_AmazonEC2ContainerRegi
 }
 
 
+
+
+
+resource "aws_iam_policy" "AWSLoadBalancerControllerIAMPolicy" {
+  name   = "AWSLoadBalancerControllerIAMPolicy"
+  policy = file("${path.module}/iam_policy.json")
+}
+
+
+resource "aws_iam_role_policy_attachment" "node_nlb" {
+  policy_arn = aws_iam_policy.AWSLoadBalancerControllerIAMPolicy.arn
+  role       = aws_iam_role.node_group_eks.name
+}

@@ -3,12 +3,13 @@ import subprocess
 
 
 def runShell(args,printArgs=False):
-    if printArgs:
-        print( process.args)
+
     process = subprocess.Popen(args , 
                            stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE,
-                           universal_newlines=True)
+                           universal_newlines=True)    
+    if printArgs:
+        print( process.args)
     stdout,stderr = process.communicate()
 
  
