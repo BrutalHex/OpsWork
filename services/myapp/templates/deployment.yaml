@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: myapp
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.myapp.image }}"
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: "0.5"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.myapp.service.internalPort | int }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.myapp.service.internalPort | int }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.myapp.service.internalPort | int }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.myapp.service.port | int }}
+    targetPort: {{ .Values.myapp.service.internalPort | int }}
+    protocol: TCP
+    name: "{{ .Values.myapp.service.internalPort }}-main"
+  selector: 
+    app: myapp

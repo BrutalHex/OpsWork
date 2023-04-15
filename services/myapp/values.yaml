@@ -1,0 +1,5 @@
+myapp:
+  image: 342273264631.dkr.ecr.eu-central-1.amazonaws.com/myapp:10
+  service: 
+       internalPort: 9000
+       port: 80
