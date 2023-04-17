@@ -124,18 +124,8 @@ jobs:
         helm upgrade --install base ./services/base --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
 
 
- 
-
-    - name: argocd secret
+    - name: install locl chart "myapp"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      continue-on-error: true
       run: |
-        kubectl create secret generic ops-ssh-key --from-literal=sshPrivateKey="$SSH_PRIVATE_KEY" -n argocd
-
-   
-        
-
-    - name: install locl chart "myapp"
-      run: |
-        helm upgrade --install myapp ./services/myapp --create-namespace --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
+        helm upgrade --install myapp ./services/myapp --create-namespace --set privatekey='$SSH_PRIVATE_KEY'  --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}

@@ -7,6 +7,7 @@ metadata:
   labels:
     istio-injection: enabled
 ---
+# This is an auto-generated file. DO NOT EDIT
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -17061,84 +17062,3 @@ spec:
       app.kubernetes.io/name: argocd-server
   policyTypes:
   - Ingress
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: argocd-application-controller-extra
-rules:
-- apiGroups:
-  - vpcresources.k8s.aws
-  resources:
-  - securitygrouppolicies
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  - endpoints
-  - nodes
-  - secrets
-  - persistentvolumeclaims
-  - persistentvolumeclaims/status
-  - pods
-  - replicationcontrollers
-  - replicationcontrollers/scale
-  - serviceaccounts
-  - services
-  - services/status
-  - persistentvolumes
-  - podtemplates
-  - bindings
-  - events
-  - limitranges
-  - namespaces/status
-  - pods/log
-  - pods/status
-  - replicationcontrollers/status
-  - resourcequotas
-  - resourcequotas/status
-  - namespaces
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - "networking.k8s.io"
-  - "extensions"
-  - "discovery.k8s.io"
-  - "cert-manager.io"
-  - "batch"
-  - "argoproj.io"
-  - "apps"
-  - "apiextensions.k8s.io"
-  - "apiregistration.k8s.io"
-  - "acme.cert-manager.io"
-  - "autoscaling"
-  - "storage.k8s.io"
-  - "scheduling.k8s.io"
-  - "security.istio.io"
-  resources:
-  - "*"
-  verbs: [get, list, watch]
-- nonResourceURLs:
-  - '*'
-  verbs: [get, list, watch]
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: argocd-application-controller-extra
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: argocd-application-controller-extra
-subjects:
-- kind: ServiceAccount
-  name: argocd-application-controller
-  namespace: default

@@ -8,11 +8,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ssh://git@github.com:BrutalHex/OpsWork.git
+    repoURL: 'ssh://git@github.com/BrutalHex/OpsWork.git'
     targetRevision: HEAD
     path: services/myapp/
     repoCredentialsSecret:
-      name: ops-ssh-key
+        name: my-private-ssh-repo
     helm:
       valueFiles:
         - values.yaml
