@@ -31,3 +31,7 @@ to get service endpoint execute:
 `echo $(kubectl get svc myapp -o jsonpath="{.status.loadBalancer.ingress[].hostname}")`
 
 
+
+
+helm package ./services/myapp -d ./packages
+helm repo index ./packages

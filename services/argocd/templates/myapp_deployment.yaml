@@ -1,27 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: myapp
   annotations:
+    argocd-image-updater.argoproj.io/image-list: gcr.io/heptio-images/ks-guestbook-demo:^0.1
     argocd.argoproj.io/image-updater.update-policy: >
       myapp.image=semver:*,{{ .Values.myapp.image }}
+  name: myapp
+  namespace: default
 spec:
-  project: default
-  source:
-    repoURL: 'ssh://git@github.com/BrutalHex/OpsWork.git'
-    targetRevision: HEAD
-    path: services/myapp/
-    repoCredentialsSecret:
-        name: my-private-ssh-repo
-    helm:
-      valueFiles:
-        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
+  project: default
+  source:
+    repoURL: git@github.com/BrutalHex/OpsWork.git
+    
+    targetRevision: HEAD
+    chart: myapp
+    helm:
+      valueFiles:
+        - values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - Replace=true

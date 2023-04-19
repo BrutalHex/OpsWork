@@ -38,6 +38,9 @@ print( stdout )
 #helm
 
 
+
+
+
 stdout, stderr=runShell(shlex.split('helm repo add istio https://istio-release.storage.googleapis.com/charts'),True)
 if stderr:
     raise Exception(stderr)
@@ -63,9 +66,10 @@ stdout, stderr=runShell(shlex.split('helm upgrade --install istiod istio/istiod 
 throwException(stderr)
  
   
-
+ 
 stdout, stderr=runShell(shlex.split(f'helm upgrade --install base ./services/base --create-namespace --timeout=5m --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),True)
 throwException(stderr)
 
-stdout, stderr=runShell(shlex.split(f'helm upgrade --install myapp ./services/myapp --create-namespace --timeout=5m --set cluster.roleArn={clusterRole[0]} --set cluster.name={clusterName[0]}'),True)
-throwException(stderr)
+#  
+#stdout, stderr=runShell(shlex.split(f'helm upgrade --install argocd ./services/argocd --namespace argocd --set privatekey="$(echo -n $prv | base64 -w0)" --create-namespace --timeout=5m'),True)
+#throwException(stderr)

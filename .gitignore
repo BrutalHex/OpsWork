@@ -53,3 +53,4 @@ __azurite_db*__.json
 *.tfstate
 *.tfstate.*
 infra/.terraform/*
+./charts/

@@ -5,6 +5,15 @@ on:
       - main
 env:
   TERRAFORM_WORKING_DIR: './infra' 
+
+
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
