@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd-image-updater.argoproj.io/image-list: gcr.io/heptio-images/ks-guestbook-demo:^0.1
+    argocd-image-updater.argoproj.io/image-list: {{ .Values.myapp.image }}
     argocd.argoproj.io/image-updater.update-policy: >
       myapp.image=semver:*,{{ .Values.myapp.image }}
   name: myapp
@@ -13,13 +13,13 @@ spec:
     namespace: default
   project: default
   source:
-    repoURL: git@github.com/BrutalHex/OpsWork.git
-    
+    repoURL: https://brutalhex.github.io/OpsWork
     targetRevision: HEAD
     chart: myapp
     helm:
       valueFiles:
         - values.yaml
+      releaseName: myapp
   syncPolicy:
     automated:
       prune: true

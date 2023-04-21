@@ -1,5 +1,0 @@
-image: nginx:latest
-service:
-  internalPort: 80
-  port: 80
- 

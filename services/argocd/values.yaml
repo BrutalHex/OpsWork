@@ -1,6 +1,19 @@
 myapp:
-  image: 342273264631.dkr.ecr.eu-central-1.amazonaws.com/myapp:latest
+  image: 342273264631.dkr.ecr.eu-central-1.amazonaws.com/myapp:16
   service: 
        internalPort: 9000
        port: 80
 privatekey: ''
+authScripts:
+  enabled: true
+  scripts: 
+    ecr-login.sh: |   # notice script name matches above    
+      #!/bin/sh
+      aws ecr --region $AWS_REGION get-authorization-token --output text --query 'authorizationData[].authorizationToken' | base64 -d
+extraEnv: 
+- name: AWS_REGION
+  value: "eu-central-1"
+#- name: AWS_ACCESS_KEY_ID
+#  value: ''
+#- name: AWS_SECRET_ACCESS_KEY
+#  value: ''

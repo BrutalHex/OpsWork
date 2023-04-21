@@ -29,13 +29,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: '3.10.3'
+
+
+      - name: Set up Helm config
+        run: |
+            mkdir -p $HOME/.helm/repository
+            echo -e "apiVersion: v1\nrepositories: []" > $HOME/.helm/repository/repositories.yaml
+
+      - name: setup charts
+        run: |
+          helm package ./services/myapp -d ./docs
+          helm repo index ./docs
+          cp ./docs/index.yaml ./docs/index.html
+          touch ./docs/.nojekyll
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
+             path: './docs'
+             
+      - name: Deploy 
         id: deployment
         uses: actions/deploy-pages@v2
