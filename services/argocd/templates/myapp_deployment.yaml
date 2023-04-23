@@ -7,14 +7,16 @@ metadata:
       myapp.image=semver:*,{{ .Values.myapp.image }}
   name: myapp
   namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: argocd
   project: default
   source:
     repoURL: https://brutalhex.github.io/OpsWork
-    targetRevision: HEAD
+    targetRevision: 0.2.18 
     chart: myapp
     helm:
       valueFiles:
@@ -25,5 +27,11 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      #- CreateNamespace=true
       - Replace=true
+    retry:
+      limit: 5  
+      backoff:
+        duration: 10s  
+        factor: 2  
+        maxDuration: 3m

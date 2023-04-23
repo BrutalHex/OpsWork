@@ -4,6 +4,9 @@ metadata:
   name: myapp
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app.kubernetes.io/instance: myapp
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp:apps/Deployment:default/myapp
 spec:
   selector:
     matchLabels:
