@@ -130,7 +130,7 @@ jobs:
 
     - name: install locl chart "base"
       run: |
-        helm upgrade --install base ./services/base --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
+        helm upgrade --install base ./services/base --timeout=10m --wait --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
 
 
     - name: install argocd
