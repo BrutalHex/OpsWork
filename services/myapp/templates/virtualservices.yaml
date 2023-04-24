@@ -2,12 +2,12 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: main-vservice
-  namespace: istio-system
+  namespace: default
 spec:
   hosts:
   - '*'
   gateways:
-  - main-gateway
+  - istio-system/main-gateway
   http:
   - route:
     - destination:
