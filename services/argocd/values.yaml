@@ -11,9 +11,6 @@ authScripts:
       #!/bin/sh
       aws ecr --region $AWS_REGION get-authorization-token --output text --query 'authorizationData[].authorizationToken' | base64 -d
 extraEnv: 
-- name: AWS_REGION
-  value: "eu-central-1"
-#- name: AWS_ACCESS_KEY_ID
-#  value: ''
-#- name: AWS_SECRET_ACCESS_KEY
-#  value: ''
+  AWS_REGION: eu-central-1
+  AWS_ACCESS_KEY_ID: ''
+  AWS_SECRET_ACCESS_KEY: ''

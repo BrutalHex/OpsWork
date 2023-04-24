@@ -86,8 +86,9 @@ spec:
                 key: kube.events
                 name: argocd-image-updater-config
                 optional: true  
-          {{- with .Values.extraEnv }}
-            {{- toYaml . | nindent 10 }}
+          {{- range $key, $value := .Values.extraEnv }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
           {{- end }}
         image: quay.io/argoprojlabs/argocd-image-updater:v0.12.0
         imagePullPolicy: Always

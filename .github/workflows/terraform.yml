@@ -133,8 +133,12 @@ jobs:
         helm upgrade --install base ./services/base --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
 
 
-    - name: install locl chart "myapp"
+    - name: install argocd
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
-        helm upgrade --install myapp ./services/myapp --create-namespace --set privatekey='$SSH_PRIVATE_KEY'  --timeout=5m --set cluster.roleArn=${{env.CLUSTER_ROLE}} --set cluster.name=${{env.CLUSTER_NAME}}
+        helm upgrade --install argocd ./services/argocd --namespace argocd --set privatekey="$(echo -n $prv | base64 -w0)" --create-namespace --set extraEnv.AWS_REGION="$AWS_REGION" --set extraEnv.AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" --set extraEnv.AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+

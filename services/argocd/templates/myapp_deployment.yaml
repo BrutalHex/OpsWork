@@ -16,7 +16,7 @@ spec:
   project: appsproject
   source:
     repoURL: https://brutalhex.github.io/OpsWork
-    targetRevision: 0.2.18 
+    targetRevision: 0.2.20 
     chart: myapp
     helm:
       valueFiles:

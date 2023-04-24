@@ -6,12 +6,13 @@ metadata:
     app.kubernetes.io/part-of: argocd-image-updater
   name: argocd-image-updater-config
 data:
-    log.level: debug
+    log.level: info
     applications_api: argocd
     # The address of Argo CD API endpoint - defaults to argocd-server.argocd
     argocd.server_addr: argocd-server.argocd
     # Whether to ignore invalid TLS cert from Argo CD API endpoint
     argocd.insecure: "true"
+    argocd.grpc_web: "true"
     # Whether to use plain text connection (http) instead of TLS (https)
     argocd.plaintext: "false"
     registries.conf: |
